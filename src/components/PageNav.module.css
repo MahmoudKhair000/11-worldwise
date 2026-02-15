@@ -1,16 +1,23 @@
 .nav {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-bottom: 1px solid var(--color-brand--2);
 }
 
 .nav ul {
+  width: 100%;
   list-style: none;
   display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
   align-items: center;
   gap: 4rem;
 }
 
+/* :link and :visited are pseudo-classes, 
+used to style links in their normal and visited state */
 .nav a:link,
 .nav a:visited {
   text-decoration: none;
@@ -21,9 +28,12 @@
 }
 
 /* CSS Modules feature */
+/* using classes in modules is different than using regular CSS, no class clashes */
+/* we can use global selectors, by using :global(.<className>),
+ like saying any element with <className> */
 .nav a:global(.active) {
-  /* color: var(--color-brand--2); */
-  color: #008f3b;
+  color: var(--color-brand--2);
+  /* color: #008f3b; */
 }
 
 a.ctaLink:link,

@@ -1,21 +1,34 @@
 import styles from "./City.module.css";
+import { useParams } from "react-router-dom";
+// import { useEffect } from "react";
+import ButtonBack from "./ButtonBack";
 
-const formatDate = (date) =>
+const formatDate = (date) => {
   new Intl.DateTimeFormat("en", {
     day: "numeric",
     month: "long",
     year: "numeric",
     weekday: "long",
   }).format(new Date(date));
+};
 
-function City() {
-  // TEMP DATA
-  const currentCity = {
-    cityName: "Lisbon",
-    emoji: "🇵🇹",
-    date: "2027-10-31T15:59:59.138Z",
-    notes: "My favorite city so far!",
-  };
+function City({ cities }) {
+  const params = useParams();
+  // const queries = useQueries();
+
+  const currentCity = cities.find((city) => city.id === Number(params.id));
+
+  // // // TEMP DATA
+  // const currentCity = {
+  //   cityName: "Lisbon",
+  //   emoji: "🇵🇹",
+  //   date: "2027-10-31T15:59:59.138Z",
+  //   notes: "My favorite city so far!",
+  // };
+
+  console.log(`City ID:`, Number(params.id));
+  console.log(`Cities: `, cities);
+  console.log(`Current City: `, currentCity);
 
   const { cityName, emoji, date, notes } = currentCity;
 
@@ -50,7 +63,6 @@ function City() {
           Check out {cityName} on Wikipedia &rarr;
         </a>
       </div>
-
       <div>
         <ButtonBack />
       </div>

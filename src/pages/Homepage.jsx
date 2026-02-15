@@ -14,7 +14,9 @@ export default function Homepage() {
         </h1>
         {/* hard refreshing the page */}
         {/* <a href="/pricing">Get Started with pricing</a> */}
-        <Link to="/pricing">Get Started with pricing</Link>
+        <Link to="/app/cities" className="cta">
+          Go to App
+        </Link>
         <h2>
           A world map that tracks your footsteps into every city you can think
           of. Never forget your wonderful experiences, and show your friends how
