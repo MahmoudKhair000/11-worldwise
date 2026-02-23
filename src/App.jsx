@@ -36,9 +36,7 @@ function App() {
         // console.log(data);
       } catch (error) {
         // alert("Error fetching cities: " + error.message);
-        alert("Error fetching cities: "
-          + error.message
-          + ".\nYou'll be using local data instead.");
+        alert("Error fetching cities: " + error.message + ".\nYou'll be using local data instead.");
         setCities(jsonCities.cities);
       } finally {
         setIsLoading(false);
