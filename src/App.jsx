@@ -15,11 +15,13 @@ import CountryList from "./components/CountryList";
 import City from "./components/City";
 import Form from "./components/Form";
 
+import jsonCities from "../data/cities.json";
 // import PageNav from "./components/PageNav";
 
 function App() {
   const [cities, setCities] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
   const BASE_URL = "http://localhost:8000";
 
   useEffect(function () {
@@ -33,7 +35,11 @@ function App() {
         setCities(data);
         // console.log(data);
       } catch (error) {
-        alert("Error fetching cities: " + error.message);
+        // alert("Error fetching cities: " + error.message);
+        alert("Error fetching cities: "
+          + error.message
+          + ".\nYou'll be using local data instead.");
+        setCities(jsonCities.cities);
       } finally {
         setIsLoading(false);
       }
@@ -41,6 +47,8 @@ function App() {
 
     fetchCities();
   }, []);
+
+  console.log(cities);
 
   return (
     <BrowserRouter>
