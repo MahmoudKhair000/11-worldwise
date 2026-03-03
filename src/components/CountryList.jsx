@@ -2,9 +2,12 @@ import styles from "./CountryList.module.css";
 import Spinner from "./Spinner";
 import CountryItem from "./CountryItem";
 import Message from "./Message";
+import { useCitiesContext } from "../contexts/CitiesContext";
 // import City from "./City";
 
-function CountryList({ cities, isLoading }) {
+function CountryList() {
+  const { cities, isLoading } = useCitiesContext();
+
   const countries = cities.reduce((accArr, currCity) => {
     // if (!accArr.some((i) => i.country === currCity.country)) {
     if (!accArr.map((i) => i.country).includes(currCity.country)) {

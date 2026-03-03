@@ -3,6 +3,8 @@ import styles from "./Sidebar.module.css";
 import Logo from "./Logo";
 import AppNav from "./AppNav";
 import { Outlet } from "react-router-dom";
+// import { convertToEmoji } from "./Form";
+
 function Sidebar() {
   return (
     <div className={styles.sidebar}>
@@ -12,8 +14,9 @@ function Sidebar() {
       <footer className={styles.footer}>
         <p>
           <br />
-          &copy; Copyright {new Date().getFullYear()} City Explorer. All rights
-          reserved.
+          🌐-wise-🍑
+          &copy; Copyright {new Date().getFullYear()} City Explorer.
+          All rights reserved.
         </p>
       </footer>
     </div>

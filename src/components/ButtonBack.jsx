@@ -1,10 +1,14 @@
-import { NavLink } from "react-router-dom";
-import styles from "./Button.module.css";
+import { useNavigate } from "react-router-dom";
+// import styles from "./Button.module.css";
+import Button from "./Button";
+
 function ButtonBack() {
+  const navigate = useNavigate();
   return (
-    <NavLink to="/app/cities">
-      <button className={`${styles.btn} ${styles.back}`}>&larr; Back</button>
-    </NavLink>
+    <Button type="back" onClick={(e) => {
+      e.preventDefault();
+      navigate(-1);
+    }}>&larr; Back</Button>
   );
 }
 

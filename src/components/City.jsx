@@ -1,71 +1,80 @@
 import styles from "./City.module.css";
-import { useParams } from "react-router-dom";
-// import { useEffect } from "react";
-import ButtonBack from "./ButtonBack";
-import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+// import ButtonBack from "./ButtonBack";
+import { useEffect } from "react";
+import { useCitiesContext } from "../contexts/CitiesContext";
+// import jsonCities from "../../data/cities.json";
+import Spinner from "./Spinner";
+import Button from "./Button";
 
 const formatDate = (date) => {
-  return new Intl.DateTimeFormat("en", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-    weekday: "long",
-  }).format(new Date(date));
+  const options = { day: "numeric", month: "long", year: "numeric", weekday: "long" };
+  return new Intl.DateTimeFormat("en", options).format(new Date(date || Date.now()));
 };
 
-function City({ cities }) {
+function City() {
+  const { getCity, currentCity, isLoading } = useCitiesContext();
   const { id } = useParams();
-  const [currentCity, setCurrentCity] = useState(null);
+  const { cityName, emoji, date, notes } = currentCity;
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const foundCity = cities.find((city) => city.id === Number(id));
-    setCurrentCity(foundCity);
-  }, [cities, id]);
+    getCity(id);
+    /*
+    *Callback loop effect*
+    Your effect calls getCity which: updates context state →
+    → re-render → new getCity → effect runs again → loop.
+  
+    Adding getCity as a dependency causes a loop. So, it's omitted.
+    And ignored by the linter. Remove before production and deployment.
+   */
 
-  if (!currentCity) return <p>Loading...</p>;
-  console.log(`Current City: `, currentCity);
-
-  const { cityName, emoji, date, notes } = currentCity;
-
-  // console.log(`City ID:`, Number(id));
-  // console.log(`Cities: `, cities);
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
 
   return (
-    <div className={styles.city}>
-      <div className={styles.row}>
-        <h6>City name</h6>
-        <h3>
-          <span>{emoji}</span> {cityName}
-        </h3>
-      </div>
+    <>
+      {isLoading && <Spinner />}
+      {!isLoading && (
+        <div className={styles.city}>
+          <div className={styles.row}>
+            <h6>City name</h6>
+            <h3>
+              <span>{emoji}</span> {cityName}
+            </h3>
+          </div>
 
-      <div className={styles.row}>
-        <h6>You went to {cityName} on</h6>
-        <p>{formatDate(date)}</p>
-      </div>
+          <div className={styles.row}>
+            <h6>You went to {cityName} on</h6>
+            <p>{formatDate(date)}</p>
+          </div>
 
-      {notes && (
-        <div className={styles.row}>
-          <h6>Your notes</h6>
-          <p>{notes}</p>
+          {notes && (
+            <div className={styles.row}>
+              <h6>Your notes</h6>
+              <p>{notes}</p>
+            </div>
+          )}
+
+          <div className={styles.row}>
+            <h6>Learn more</h6>
+            <a
+              href={`https://en.wikipedia.org/wiki/${cityName}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Check out {cityName} on Wikipedia &rarr;
+            </a>
+          </div>
+
+          <div>
+            <Button type="back" onClick={() => navigate('../cities')}>
+              &larr; Back
+            </Button>
+          </div>
         </div>
       )}
-
-      <div className={styles.row}>
-        <h6>Learn more</h6>
-        <a
-          href={`https://en.wikipedia.org/wiki/${cityName}`}
-          target="_blank"
-          rel="noreferrer"
-        >
-          Check out {cityName} on Wikipedia &rarr;
-        </a>
-      </div>
-      <div>
-        <ButtonBack />
-      </div>
-    </div>
+    </>
   );
 }
 
