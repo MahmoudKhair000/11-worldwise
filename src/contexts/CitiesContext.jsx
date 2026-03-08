@@ -25,13 +25,17 @@ function reducer(state, action) {
 		case "city/added":
 			return { ...state, currentCity: action.payload, isLoading: false };
 		case "city/add-failed":
-			alert(action.payload + "\nCan't make changes offline");
-			return { ...state, isLoading: false };
+			// alert(action.payload + "\nCan't make changes offline");
+			return {
+				...state,
+				cities: [...state.cities, action.payload]
+				, isLoading: false
+			};
 		case "city/deleted":
 			return { ...state, currentCity: {}, isLoading: false };
 		case "city/delete-failed":
-			alert(action.payload + "\nCan't make changes offline");
-			return { ...state, isLoading: false };
+			// alert(action.payload + "\nCan't make changes offline");
+			return { ...state, cities: state.cities.filter((c) => c.id !== action.payload), isLoading: false };
 		default:
 			throw new Error("Unknown Action !!");
 	}
@@ -110,8 +114,8 @@ function CitiesProvider({ children }) {
 			// console.log(data);
 			dispatch({ type: "city/added", payload: data })
 		} catch (err) {
-			console.error(err.message)
-			dispatch({ type: "city/add-failed", payload: err.message })
+			// console.error(err.message)
+			dispatch({ type: "city/add-failed", payload: newCity })
 		}
 	}
 
@@ -122,7 +126,7 @@ function CitiesProvider({ children }) {
 			dispatch({ type: "city/deleted" })
 		} catch (err) {
 			console.error(err.message);
-			dispatch({ type: "city/delete-failed", payload: err.message })
+			dispatch({ type: "city/delete-failed", payload: cityId })
 		}
 	}
 
