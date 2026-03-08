@@ -2,6 +2,7 @@
   "cities": [
     {
       "cityName": "Lisbon",
+      "countryCode": "PT",
       "country": "Portugal",
       "emoji": "🇵🇹",
       "date": "2027-10-31T15:59:59.138Z",
@@ -15,6 +16,7 @@
     {
       "cityName": "Madrid",
       "country": "Spain",
+      "countryCode": "ES",
       "emoji": "🇪🇸",
       "date": "2027-07-15T08:22:53.976Z",
       "notes": "",
@@ -27,6 +29,7 @@
     {
       "cityName": "Berlin",
       "country": "Germany",
+      "countryCode": "DE",
       "emoji": "🇩🇪",
       "date": "2027-02-12T09:24:11.863Z",
       "notes": "Amazing 😃",
@@ -35,6 +38,90 @@
         "lng": 13.376933665713324
       },
       "id": 98443197
+    },
+    {
+      "cityName": "Al Qusayr",
+      "countryCode": "EG",
+      "country": "Egypt",
+      "date": "2026-03-07T15:28:24.717Z",
+      "notes": "",
+      "position": {
+        "lat": 26.107796818181832,
+        "lng": 34.26630518181818
+      },
+      "id": 98443200
+    },
+    {
+      "cityName": "London",
+      "countryCode": "GB",
+      "country": "United Kingdom of Great Britain and Northern Ireland (the)",
+      "date": "2026-03-07T18:15:11.048Z",
+      "notes": "Wembley Stadium!!",
+      "position": {
+        "lat": 51.55601371887618,
+        "lng": -0.27963579653796705
+      },
+      "id": 98443203
+    },
+    {
+      "cityName": "Barcelona",
+      "countryCode": "ES",
+      "country": "Spain",
+      "date": "2026-03-07T18:19:29.724Z",
+      "notes": "Camp Nou !!",
+      "position": {
+        "lat": 41.38094290857634,
+        "lng": 2.1227860414024806
+      },
+      "id": 98443204
+    },
+    {
+      "cityName": "Stockholm",
+      "countryCode": "SE",
+      "country": "Sweden",
+      "date": "2026-03-07T18:25:41.093Z",
+      "notes": "",
+      "position": {
+        "lat": 59.32709834981023,
+        "lng": 18.07296574198435
+      },
+      "id": 98443205
+    },
+    {
+      "cityName": "Dublin",
+      "countryCode": "IE",
+      "country": "Ireland",
+      "date": "2026-03-07T18:35:36.763Z",
+      "notes": "",
+      "position": {
+        "lat": 53.31687973157627,
+        "lng": -6.300659273053477
+      },
+      "id": 98443206
+    },
+    {
+      "cityName": "Jerusalem",
+      "countryCode": "PS",
+      "country": "Palestine, State of",
+      "date": "2026-03-07T21:54:10.485Z",
+      "notes": "Al-Aqsa \n",
+      "position": {
+        "lat": 31.776079448220354,
+        "lng": 35.23561119826042
+      },
+      "id": 98443210
+    },
+    {
+      "cityName": "Paris",
+      "countryCode": "FR",
+      "country": "France",
+      "date": "2026-03-08T00:43:53.021Z",
+      "notes": "",
+      "position": {
+        "lat": 48.85520359954082,
+        "lng": 2.346601461979883
+      },
+      "id": 98443211
     }
   ]
 }

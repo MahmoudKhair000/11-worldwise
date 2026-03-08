@@ -15,6 +15,8 @@ import CountryList from "./components/CountryList";
 import City from "./components/City";
 import Form from "./components/Form";
 import { CitiesProvider } from "./contexts/CitiesContext";
+import { AuthProvider } from "./contexts/FakeAuthContext";
+import ProtectedRoute from "./pages/ProtectedRoute";
 
 // import PageNav from "./components/PageNav";
 
@@ -24,31 +26,35 @@ function App() {
   return (
     <CitiesProvider>
       <BrowserRouter>
-        {/* NavLink component should be in BrowserRouter,
+        <AuthProvider>
+          {/* NavLink component should be in BrowserRouter,
         because it needs to access the router context,
         without it won't be recognized and won't work */}
-        {/* <PageNav /> */}
-        <Routes>
-          <Route path="/" element={<Homepage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/pricing" element={<Pricing />} />
-          <Route path="/product" element={<Product />} />
-          <Route path="/app/" element={<AppLayout />}>
+          {/* <PageNav /> */}
+          <Routes>
+            <Route path="/" element={<Homepage />} />
+            <Route path="/pricing" element={<Pricing />} />
+            <Route path="/product" element={<Product />} />
+            <Route path="/login" element={<Login />} />
             <Route
-              index
-              // element={<CityList isLoading={isLoading} cities={cities} />}
-              element={<Navigate replace to="cities" />}
-            />
-            {/* you render the element in the UI by using the component <Outlet/> */}
-            <Route path="cities" element={<CityList />} />
-            <Route path="cities/:id" element={<City />} />
-            <Route path="countries" element={<CountryList />} />
-            <Route path="form" element={<Form />} />
-          </Route>
-          {/* <Route path="*" element={<PageNotFound />} />
-        // means all other routes will go to PageNotFound */}
-          <Route path="*" element={<PageNotFound />} />
-        </Routes>
+              path="/app/"
+              element={
+                <ProtectedRoute>
+                  <AppLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route index element={<Navigate replace to="cities" />} />
+              {/* you render the element in the UI by using the component <Outlet/> */}
+              <Route path="cities" element={<CityList />} />
+              <Route path="cities/:id" element={<City />} />
+              <Route path="countries" element={<CountryList />} />
+              <Route path="form" element={<Form />} />
+            </Route>
+            {/* means all other routes will go to PageNotFound */}
+            <Route path="*" element={<PageNotFound />} />
+          </Routes>
+        </AuthProvider>
       </BrowserRouter>
     </CitiesProvider>
   );

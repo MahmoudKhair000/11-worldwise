@@ -1,6 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 
-function useUrlPosition(defaultValue = [0, 0]) {
+export default function useUrlPosition(defaultValue = [0, 0]) {
   const [searchParams] = useSearchParams();
   const lat = searchParams.get('lat');
   const lng = searchParams.get('lng');
@@ -10,5 +10,3 @@ function useUrlPosition(defaultValue = [0, 0]) {
     lng ? parseFloat(lng) : defaultValue[1]
   ];
 }
-
-export { useUrlPosition };

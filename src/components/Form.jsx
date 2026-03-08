@@ -1,13 +1,14 @@
-/* eslint-disable react-refresh/only-export-components */
 // "https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=0&longitude=0"
 
 import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUrlPosition } from "../hooks/useUrlPosition";
+import useUrlPosition from "../hooks/useUrlPosition";
 import Button from "./Button";
 import styles from "./Form.module.css";
 import Spinner from "./Spinner";
 import Message from "./Message";
+import { useCitiesContext } from "../contexts/CitiesContext";
+// import { useGeolocation } from "../hooks/useGeoLocation";
 
 /*
 const exampleData = {
@@ -29,65 +30,107 @@ const exampleData = {
 }
 */
 
-export function convertToEmoji(countryCode) {
-  const codePoints = countryCode
-    .toUpperCase()
-    .split("")
-    .map((char) => 127397 + char.charCodeAt());
-  return String.fromCodePoint(...codePoints);
-}
-
 function Form() {
   const navigate = useNavigate();
   const [mapLat, mapLng] = useUrlPosition();
+
+  /* Get geolocation position, the user's current location */
+  // const {
+  // isLoading: geoLoading,
+  // position: geoPosition,
+  // getPosition: getGeoPosition,
+  // error: geoError
+  // } = useGeolocation();
+
   const formRef = useRef(null);
+
   const BASE_URL = `https://api.bigdatacloud.net/data/reverse-geocode-client`;
   const [isFormLoading, setIsFormLoading] = useState(false);
+  const [formError, setFormError] = useState("");
+  // New City Data
   const [cityName, setCityName] = useState("");
   const [country, setCountry] = useState("");
   const [countryCode, setCountryCode] = useState("");
-  // const [emoji, setEmoji] = useState("");
   const [date, setDate] = useState(new Date());
   const [notes, setNotes] = useState("");
-  const [formError, setFormError] = useState("");
+
+  const { createCity, isLoading } = useCitiesContext();
 
   const principalSubdivision = useRef("");
 
   useEffect(
-    () => {
-      setIsFormLoading(true);
-      // fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${0}&longitude=${0}`)
-      fetch(`${BASE_URL}?latitude=${mapLat}&longitude=${mapLng}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setCityName(data.city || data.locality || '');
-          setCountry(data.countryName || '');
-          setCountryCode(data.countryCode || '');
-          setDate(new Date());
-          principalSubdivision.current = data.principalSubdivision;
-          setFormError("");
+    function () {
+      if (!mapLat || !mapLng) return;
 
-          if (!data.countryCode)
-            throw new Error("That doesn't seem to be a city, Click somewhere else 😉")
-          // setEmoji(convertToEmoji(data.countryCode));
-          console.log(data);
-        }).catch(
-          (err) => {
-            // console.error(err);
-            setFormError(err.message);
-          }
-        ).finally(
-          () => setIsFormLoading(false)
-        );
+      function fetchLocationDate(lat, lng) {
+        setIsFormLoading(true);
+        // fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${0}&longitude=${0}`)
+        fetch(`${BASE_URL}?latitude=${lat}&longitude=${lng}`)
+          .then((res) => res.json())
+          .then((data) => {
+            setCityName(data.city || data.locality || '');
+            setCountry(
+              data.countryName === 'Israel'
+                ? "Palestine, State of"
+                : (data.countryName || '')
+            );
+            setCountryCode(
+              data.countryCode === "IL"
+                ? "PS"
+                : (data.countryCode || '')
+            );
+            setDate(new Date());
+            principalSubdivision.current = data.principalSubdivision;
+            setFormError("");
+            // console.log(data)
+            if (!data.countryCode)
+              throw new Error("That doesn't seem to be a city, Click somewhere else 😉")
+          }).catch(
+            (err) => {
+              // console.error(err);
+              setFormError(err.message);
+            }
+          ).finally(
+            () => setIsFormLoading(false)
+          );
+      }
+      fetchLocationDate(mapLat, mapLng);
     },
-    [mapLat, mapLng]
-  )
+    [BASE_URL, mapLat, mapLng])
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    // e.stopPropagation();
+    // e.stopImmediatePropagation();
+
+    if (!cityName || !countryCode || !date) return;
+
+    const newCity = {
+      cityName,
+      countryCode,
+      country,
+      date,
+      notes,
+      position: { lat: mapLat, lng: mapLng },
+    }
+
+    // console.log(newCity);
+    await createCity(newCity);
+    navigate(`../cities`);
+  }
+
   if (isFormLoading) return <Spinner />;
   if (formError) return <Message message={formError} />;
   return (
-    <form ref={formRef} className={styles.form}>
+    <form
+      ref={formRef}
+      className={`
+        ${styles.form}${' '}
+        ${(isLoading || isFormLoading) ? styles.loading : ''}
+        `}
+      onSubmit={handleSubmit}
+    >
       <div className={styles.row}>
-        {/* htmlFor='inputID' */}
         <label htmlFor="cityName">City Name</label>
         <input
           id="cityName" disabled={!!cityName}
@@ -126,8 +169,13 @@ function Form() {
       </div>
 
       <div className={styles.buttons}>
-        <Button onClick={(e) => e.preventDefault()} type="primary">Add</Button>
-        <Button type="back" onClick={() => navigate('../cities')}>
+        <Button
+          type="primary"
+        // onClickFunc={
+        //   () => console.log("Add button clicked")
+        // }
+        >Add</Button>
+        <Button type="back" onClickFunc={() => navigate('../cities')}>
           &larr; Back
         </Button>
       </div>

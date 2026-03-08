@@ -68,7 +68,7 @@ function City() {
           </div>
 
           <div>
-            <Button type="back" onClick={() => navigate('../cities')}>
+            <Button type="back" onClickFunc={() => navigate('../cities')}>
               &larr; Back
             </Button>
           </div>

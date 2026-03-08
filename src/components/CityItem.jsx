@@ -1,9 +1,10 @@
+/* eslint-disable react/prop-types */
 import { NavLink } from "react-router-dom";
 import styles from "./CityItem.module.css";
 import { useCitiesContext } from "../contexts/CitiesContext";
 
 function CityItem({ cityId }) {
-  const { cities, currentCity } = useCitiesContext();
+  const { cities, currentCity, deleteCity } = useCitiesContext();
 
   const city = cities.find((c) => c.id === cityId);
 
@@ -15,7 +16,7 @@ function CityItem({ cityId }) {
       weekday: "long",
     }).format(new Date(date));
 
-  const { cityName, emoji, date, position, id } = city;
+  const { cityName, countryCode, date, position, id } = city;
   const { lat, lng } = position;
   // console.log('city:', city);
   // console.log('position:', position);
@@ -27,10 +28,17 @@ function CityItem({ cityId }) {
           ? styles["cityItem--active"]
           : ""
           }`}>
-        <span className={styles.emoji}>{emoji}</span>
+        <span className={styles.emoji}>
+          <img src={`https://flagsapi.com/${countryCode}/flat/48.png`} />
+        </span>
         <h3 className={styles.name}>{cityName}</h3>
         <time className={styles.date}>({formatDate(date)})</time>
-        <button className={styles.deleteBtn}>&times;</button>
+        <button className={styles.deleteBtn} onClick={
+          (e) => {
+            e.preventDefault();
+            deleteCity(id)
+          }
+        }>&times;</button>
       </NavLink>
     </li >
   );

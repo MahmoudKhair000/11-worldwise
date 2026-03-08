@@ -11,7 +11,10 @@ function CountryList() {
   const countries = cities.reduce((accArr, currCity) => {
     // if (!accArr.some((i) => i.country === currCity.country)) {
     if (!accArr.map((i) => i.country).includes(currCity.country)) {
-      accArr.push({ country: currCity.country, emoji: currCity.emoji });
+      accArr.push({
+        country: currCity.country,
+        countryCode: currCity.countryCode
+      });
     }
     return accArr;
   }, []);

@@ -21,8 +21,16 @@
 }
 
 .emoji {
+  display: flex;
+  flex-direction: column;
   font-size: 2.6rem;
-  line-height: 1;
+  height: 30px;
+  justify-content: center;
+}
+.emoji img {
+  height: 100%;
+  scale: 1.35;
+  margin: auto 5px;
 }
 
 .name {
