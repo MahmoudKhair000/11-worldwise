@@ -30,7 +30,10 @@ function City() {
    */
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  }, [
+    id,
+    // getCity
+  ]);
 
   return (
     <>

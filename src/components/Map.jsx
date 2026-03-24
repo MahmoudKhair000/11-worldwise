@@ -1,12 +1,13 @@
-import { useNavigate, useSearchParams } from "react-router-dom";
-import styles from "./Map.module.css";
-import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from "react-leaflet";
 import { useEffect, useState } from "react";
+import styles from "./Map.module.css";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from "react-leaflet";
 import { useCitiesContext } from "../contexts/CitiesContext";
 import { useGeolocation } from "../hooks/useGeoLocation";
+import useUrlPosition from "../hooks/useUrlPosition";
+
 import Button from "./Button";
 import User from "./User";
-import useUrlPosition from "../hooks/useUrlPosition";
 
 function validateLng(parametar) {
   if (180 > parametar && parametar > -180) {

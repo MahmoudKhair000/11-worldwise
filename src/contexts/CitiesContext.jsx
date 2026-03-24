@@ -3,7 +3,8 @@ import {
 	useEffect,
 	createContext,
 	useContext,
-	useReducer
+	useReducer,
+	useCallback
 } from "react";
 
 import jsonCities from "../../data/cities.json";
@@ -77,25 +78,27 @@ function CitiesProvider({ children }) {
 		fetchCities();
 	}, []);
 
-	async function getCity(cityId) {
-		if (Number(cityId) === currentCity.id) return;
-		dispatch({ type: "loading" });
-		try {
-			const res = await fetch(`${BASE_URL}/cities/${cityId}`);
-			const data = await res.json();
-			dispatch({ type: "city/loaded", payload: data });
-			// console.log('Current city data:', data);
-		} catch (error) {
-			// alert(
-			// 	"Error fetching city: "
-			// 	+ error.message
-			// 	+ ".\nYou'll be using local data instead."
-			// );
-			const fallback =
-				jsonCities?.cities?.find((c) => (c.id).toString() === cityId);
-			dispatch({ type: "city/loaded", payload: fallback });
+	const getCity = useCallback(
+		async function getCity(cityId) {
+			if (Number(cityId) === currentCity.id) return;
+			dispatch({ type: "loading" });
+			try {
+				const res = await fetch(`${BASE_URL}/cities/${cityId}`);
+				const data = await res.json();
+				dispatch({ type: "city/loaded", payload: data });
+				// console.log('Current city data:', data);
+			} catch (error) {
+				// alert(
+				// 	"Error fetching city: "
+				// 	+ error.message
+				// 	+ ".\nYou'll be using local data instead."
+				// );
+				const fallback =
+					jsonCities?.cities?.find((c) => (c.id).toString() === cityId);
+				dispatch({ type: "city/loaded", payload: fallback });
+			}
 		}
-	}
+		, [currentCity.id])
 
 	async function createCity(newCity) {
 		dispatch({ type: "loading" });
