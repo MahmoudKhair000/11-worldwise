@@ -70,7 +70,7 @@ function CitiesProvider({ children }) {
 				// console.log(data);
 			} catch (error) {
 				// alert("Error fetching cities: " + error.message);
-				alert("Error fetching cities: " + error.message + ".\nYou'll be using local data instead.");
+				console.log("Error fetching cities: " + error.message + ".\nYou'll be using local data instead.");
 				// setCities(jsonCities.cities);
 				dispatch({ type: "cities/loaded", payload: jsonCities.cities });
 			}
